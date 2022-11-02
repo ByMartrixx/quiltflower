@@ -89,6 +89,18 @@ public class SingleClassesTest extends SingleClassesTestBase {
       IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH, "0",
       IFernflowerPreferences.TRY_LOOP_FIX, "1"
     );
+    registerSet("Text tokens", this::registerTextTokens,
+      IFernflowerPreferences.BYTECODE_SOURCE_MAPPING, "1",
+      IFernflowerPreferences.DUMP_ORIGINAL_LINES, "1",
+      IFernflowerPreferences.DUMP_EXCEPTION_ON_ERROR, "0",
+      IFernflowerPreferences.IGNORE_INVALID_BYTECODE, "1",
+      IFernflowerPreferences.VERIFY_ANONYMOUS_CLASSES, "1",
+      IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH, "0",
+      IFernflowerPreferences.TERNARY_CONDITIONS, "1",
+      IFernflowerPreferences.FORCE_JSR_INLINE, "1",
+      IFernflowerPreferences.EXPERIMENTAL_TEXT_TOKENS, "1",
+      IFernflowerPreferences.PREFERRED_LINE_LENGTH, "80"
+    );
     registerSet("Javadoc", () -> {
       register(JAVA_8, "TestJavadoc");
     }, IFabricJavadocProvider.PROPERTY_NAME, new IFabricJavadocProvider() {
@@ -445,7 +457,7 @@ public class SingleClassesTest extends SingleClassesTestBase {
     register(JAVA_17_PREVIEW, "TestSwitchPatternMatchingWithNull");
 
     register(JAVA_17_PREVIEW, "TestSwitchPatternMatchingFuzz1");
-    
+
     // TODO: non-resugared record patterns reference hidden proxy methods
     register(JAVA_19_PREVIEW, "TestRecordPattern1");
     register(JAVA_19_PREVIEW, "TestRecordPattern2");
@@ -767,5 +779,9 @@ public class SingleClassesTest extends SingleClassesTestBase {
     register(JAVA_8, "TestTryLoopRecompile");
     register(JAVA_8, "TestTryLoopSimpleFinally");
     register(JAVA_8, "TestTryLoopReturnFinally");
+  }
+
+  private void registerTextTokens() {
+    register(JAVA_8, "TestTextTokens");
   }
 }

@@ -705,7 +705,7 @@ public class InvocationExprent extends Exprent {
             buf.append('>');
           }
         } else {
-          buf.append(name);
+          buf.token(name, name + descriptor);
         }
 
         buf.append("(");

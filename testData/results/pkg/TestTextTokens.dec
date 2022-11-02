@@ -1,0 +1,176 @@
+package pkg;
+
+import java.util.function.Function;
+
+public class TestTextTokens {
+   private TestTextTokens.Bee bee = new TestTextTokens.Bee();
+
+   public void foo() {
+      bar("Hello world");// 9
+      this.bee.buzz();// 10
+      method(
+            method(
+               s -> method(method(s1 -> s1 + "lorem ipsum dolor sit amet"))// 12
+                     + s
+            )
+         )
+         .apply("Lorem ipsum dolor sit amet");
+   }// 13
+
+   private static void bar(String s) {
+      System.out.println(s);// 16
+   }// 17
+
+   private static Function<String, String> method(Function<String, String> s) {
+      return s.andThen(str -> str.replace(" ", ""));// 20
+   }
+
+   @Deprecated
+   private class Bee {
+      private Bee() {
+      }// 24
+
+      public void buzz() {
+         TestTextTokens.bar("bzzz");// 26
+      }// 27
+   }
+}
+
+class 'pkg/TestTextTokens' {
+   method 'foo ()V' {
+      0      8
+      1      8
+      2      8
+      3      8
+      4      8
+      5      9
+      6      9
+      7      9
+      8      9
+      9      9
+      a      9
+      b      9
+      11      11
+      12      11
+      13      11
+      14      10
+      15      10
+      16      10
+      17      16
+      18      16
+      19      16
+      1a      16
+      1b      16
+      1c      16
+      1d      16
+      1f      17
+   }
+
+   method 'lambda$foo$1 (Ljava/lang/String;)Ljava/lang/String;' {
+      c      12
+      d      12
+      e      12
+      f      12
+      10      12
+      11      12
+      15      13
+      19      12
+      1a      12
+      1b      12
+      1c      11
+   }
+
+   method 'lambda$null$0 (Ljava/lang/String;)Ljava/lang/String;' {
+      7      12
+      b      12
+      c      12
+      10      12
+      11      12
+      12      12
+      13      12
+   }
+
+   method 'bar (Ljava/lang/String;)V' {
+      0      20
+      1      20
+      2      20
+      3      20
+      4      20
+      5      20
+      6      20
+      7      21
+   }
+
+   method 'method (Ljava/util/function/Function;)Ljava/util/function/Function;' {
+      0      24
+      6      24
+      7      24
+      8      24
+      9      24
+      a      24
+      b      24
+   }
+
+   method 'lambda$method$2 (Ljava/lang/String;)Ljava/lang/String;' {
+      0      24
+      1      24
+      2      24
+      3      24
+      4      24
+      5      24
+      6      24
+      7      24
+      8      24
+   }
+}
+
+class 'pkg/TestTextTokens$Bee' {
+   method '<init> (Lpkg/TestTextTokens;)V' {
+      9      30
+   }
+
+   method 'buzz ()V' {
+      0      33
+      1      33
+      2      33
+      3      33
+      4      33
+      5      34
+   }
+}
+
+Lines mapping:
+9 <-> 9
+10 <-> 10
+12 <-> 13
+13 <-> 18
+16 <-> 21
+17 <-> 22
+20 <-> 25
+24 <-> 31
+26 <-> 34
+27 <-> 35
+// Tokens:
+// 1:9 1:12 pkg
+// 5:14 5:28 (def) TestTextTokens pkg/TestTextTokens
+// 6:31 6:34 (def) bee bee:Lpkg/TestTextTokens$Bee;
+// 8:16 8:19 (def) foo foo()V
+// 9:7 9:10 bar bar(Ljava/lang/String;)V
+// 10:12 10:15 bee bee:org.jetbrains.java.decompiler.struct.gen.FieldDescriptor@38dda27f
+// 10:16 10:20 buzz buzz()V
+// 11:7 11:13 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 11:14 12:5 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 12:17 13:2 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 13:3 13:9 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 13:52 13:57 apply apply(Ljava/lang/Object;)Ljava/lang/Object;
+// 16:3 16:6 (def) bar bar(Ljava/lang/String;)V
+// 17:14 17:20 System java/lang/System
+// 17:21 17:24 out out:org.jetbrains.java.decompiler.struct.gen.FieldDescriptor@919f0136
+// 17:25 17:32 println println(Ljava/lang/String;)V
+// 20:33 20:39 (def) method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 24:8 24:15 andThen andThen(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 24:33 24:40 replace replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+// 25:7 25:10 (def) Bee pkg/TestTextTokens$Bee
+// 25:28 25:31 (def) Bee <init>(Lpkg/TestTextTokens;)V
+// 28:4 28:8 (def) buzz buzz()V
+// 29:22 29:1 bar bar(Ljava/lang/String;)V

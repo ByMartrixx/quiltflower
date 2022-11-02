@@ -497,7 +497,7 @@ public class ClassesProcessor implements CodeConstants {
         int index = cl.qualifiedName.lastIndexOf('/');
         if (index >= 0) {
           String packageName = cl.qualifiedName.substring(0, index).replace('/', '.');
-          buffer.append("package ").append(packageName).append(';').appendLineSeparator().appendLineSeparator();
+          buffer.append("package ").token(packageName, cl.qualifiedName.substring(0, index)).append(';').appendLineSeparator().appendLineSeparator();
         }
 
         importCollector.writeImports(buffer, true);
@@ -515,6 +515,10 @@ public class ClassesProcessor implements CodeConstants {
           if (DecompilerContext.getOption(IFernflowerPreferences.UNIT_TEST_MODE)) {
             buffer.appendLineSeparator();
             mapper.dumpMapping(buffer, true);
+
+            if (DecompilerContext.getOption(IFernflowerPreferences.EXPERIMENTAL_TEXT_TOKENS)) {
+              buffer.dumpTokens();
+            }
           }
         }
       }

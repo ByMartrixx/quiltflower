@@ -628,7 +628,7 @@ public class ClassWriter implements StatementWriter {
     else {
       buffer.append("class ");
     }
-    buffer.append(node.simpleName);
+    buffer.token(node.simpleName, node.classStruct.qualifiedName, true);
 
     GenericClassDescriptor descriptor = cl.getSignature();
     if (descriptor != null && !descriptor.fparameters.isEmpty()) {
@@ -752,7 +752,7 @@ public class ClassWriter implements StatementWriter {
       buffer.append(' ');
     }
 
-    buffer.append(name);
+    buffer.token(name, name + ":" + fd.getDescriptor(), true);
 
     Exprent initializer;
     if (fd.hasModifier(CodeConstants.ACC_STATIC)) {
@@ -1029,7 +1029,7 @@ public class ClassWriter implements StatementWriter {
           buffer.append(' ');
         }
 
-        buffer.append(toValidJavaIdentifier(name));
+        buffer.token(toValidJavaIdentifier(name), mt.getName() + mt.getDescriptor(), true);
         buffer.append('(');
 
         List<VarVersionPair> mask = methodWrapper.synthParameters;

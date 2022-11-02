@@ -258,6 +258,10 @@ public interface IFernflowerPreferences {
   @Description("Forces the processing of JSR instructions even if the class files shouldn't contain it (Java 7+)")
   String FORCE_JSR_INLINE = "fji";
 
+  @Name("Experimental Text Tokens")
+  @Description("Tokenize text output")
+  String EXPERIMENTAL_TEXT_TOKENS = "ett";
+
   Map<String, Object> DEFAULTS = getDefaults();
 
   static Map<String, Object> getDefaults() {
@@ -327,6 +331,8 @@ public interface IFernflowerPreferences {
     defaults.put(SOURCE_FILE_COMMENTS, "0");
     defaults.put(DECOMPILE_COMPLEX_CONDYS, "0");
     defaults.put(FORCE_JSR_INLINE, "0");
+
+    defaults.put(EXPERIMENTAL_TEXT_TOKENS, "0");
 
     return Collections.unmodifiableMap(defaults);
   }

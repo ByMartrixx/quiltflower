@@ -34,6 +34,8 @@ public class TextBuffer {
   private final Map<BytecodeMappingKey, Integer> myBytecodeOffsetMapping = new LinkedHashMap<>(); // bytecode offset -> offset in text
   private final DebugTrace myDebugTrace = DecompilerContext.getOption(IFernflowerPreferences.UNIT_TEST_MODE) ? new DebugTrace(this) : null;
 
+  private final List<TextToken> tokens = new ArrayList<>();
+
   public TextBuffer() {
     myStringBuilder = new StringBuilder();
   }
@@ -71,6 +73,16 @@ public class TextBuffer {
       append(myIndent);
     }
     return this;
+  }
+
+  public TextBuffer token(String str, String data) {
+    return token(str, data, false);
+  }
+
+  public TextBuffer token(String str, String data, boolean def) {
+    int i = myStringBuilder.length();
+    tokens.add(new TextToken(i, i + str.length(), str, data, def));
+    return append(str);
   }
 
   /**
@@ -333,6 +345,7 @@ public class TextBuffer {
     if (myDebugTrace != null) {
       myDebugTrace.myPreventDeletion = false;
     }
+    myStringBuilder.append(addTokens());
     String original = myStringBuilder.toString();
     if (myLineToOffsetMapping == null || myLineToOffsetMapping.isEmpty()) {
       if (myLineMapping != null) {
@@ -409,6 +422,46 @@ public class TextBuffer {
     return sb.toString();
   }
 
+  private String addTokens() {
+    if (dumpedTokens.isEmpty()) {
+      return "";
+    }
+
+    String str = myStringBuilder.toString();
+    StringBuilder sb = new StringBuilder();
+    sb.append("// Tokens:");
+    sb.append(myLineSeparator);
+
+    for (TextToken token : dumpedTokens) {
+      sb.append("// ");
+      sb.append(getPos(token.start, str));
+      sb.append(' ');
+      sb.append(getPos(token.end, str));
+
+      if (token.def) {
+        sb.append(" (def)");
+      }
+
+      if (!token.text.equals(token.data) && token.data != null) {
+        sb.append(' ');
+        sb.append(token.text);
+      }
+      sb.append(' ');
+      sb.append(token.data);
+      sb.append(myLineSeparator);
+    }
+
+    return sb.toString();
+  }
+
+  private String getPos(int index, String str) {
+    String before = str.substring(0, index);
+    int line = before.split(myLineSeparator).length;
+    int start = before.lastIndexOf(myLineSeparator);
+    start += start != -1 ? myLineSeparator.length() : 1;
+    return line + ":" + (index + 1 - start);
+  }
+
   private void appendLines(StringBuilder res, String[] srcLines, int from, int to, int requiredLineNumber) {
     if (to - from > requiredLineNumber) {
       List<String> strings = compactLines(Arrays.asList(srcLines).subList(from, to) ,requiredLineNumber);
@@ -475,6 +528,11 @@ public class TextBuffer {
       checkMapCreated();
       for (Map.Entry<Integer, Integer> entry : buffer.myLineToOffsetMapping.entrySet()) {
         myLineToOffsetMapping.put(entry.getKey(), entry.getValue() + myStringBuilder.length());
+      }
+    }
+    if (!buffer.tokens.isEmpty()) {
+      for (TextToken token : buffer.tokens) {
+        tokens.add(token.copyShifted(myStringBuilder.length()));
       }
     }
     buffer.myBytecodeOffsetMapping.forEach((key, value) -> {
@@ -577,6 +635,12 @@ public class TextBuffer {
         existing.add(lineMapping[i]);
       }
     }
+  }
+
+  private Set<TextToken> dumpedTokens = new LinkedHashSet<>();
+
+  public void dumpTokens() {
+    dumpedTokens.addAll(tokens);
   }
 
   private static final class BytecodeMappingKey {
