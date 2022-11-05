@@ -75,13 +75,13 @@ public class TextBuffer {
     return this;
   }
 
-  public TextBuffer token(String str, String data) {
-    return token(str, data, false);
+  public TextBuffer token(String str, String data, TextToken.Type type) {
+    return token(str, data, false, type);
   }
 
-  public TextBuffer token(String str, String data, boolean def) {
+  public TextBuffer token(String str, String data, boolean def, TextToken.Type type) {
     int i = myStringBuilder.length();
-    tokens.add(new TextToken(i, i + str.length(), str, data, def));
+    tokens.add(new TextToken(i, i + str.length(), str, data, def, type));
     return append(str);
   }
 
@@ -438,16 +438,8 @@ public class TextBuffer {
       sb.append(' ');
       sb.append(getPos(token.end, str));
 
-      if (token.def) {
-        sb.append(" (def)");
-      }
-
-      if (!token.text.equals(token.data) && token.data != null) {
-        sb.append(' ');
-        sb.append(token.text);
-      }
       sb.append(' ');
-      sb.append(token.data);
+      sb.append(token);
       sb.append(myLineSeparator);
     }
 

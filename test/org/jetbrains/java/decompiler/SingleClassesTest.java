@@ -783,5 +783,6 @@ public class SingleClassesTest extends SingleClassesTestBase {
 
   private void registerTextTokens() {
     register(JAVA_8, "TestTextTokens");
+    register(JAVA_8, "TestTextTokens2");
   }
 }

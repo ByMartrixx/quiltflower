@@ -27,6 +27,7 @@ import org.jetbrains.java.decompiler.struct.consts.ConstantPool;
 import org.jetbrains.java.decompiler.struct.gen.VarType;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.TextBuffer;
+import org.jetbrains.java.decompiler.util.TextToken;
 
 import java.io.IOException;
 import java.util.*;
@@ -497,7 +498,7 @@ public class ClassesProcessor implements CodeConstants {
         int index = cl.qualifiedName.lastIndexOf('/');
         if (index >= 0) {
           String packageName = cl.qualifiedName.substring(0, index).replace('/', '.');
-          buffer.append("package ").token(packageName, cl.qualifiedName.substring(0, index)).append(';').appendLineSeparator().appendLineSeparator();
+          buffer.append("package ").token(packageName, cl.qualifiedName.substring(0, index), TextToken.Type.PACKAGE).append(';').appendLineSeparator().appendLineSeparator();
         }
 
         importCollector.writeImports(buffer, true);

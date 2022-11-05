@@ -35,6 +35,7 @@ import org.jetbrains.java.decompiler.struct.gen.generics.GenericFieldDescriptor;
 import org.jetbrains.java.decompiler.struct.gen.generics.GenericMethodDescriptor;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.TextBuffer;
+import org.jetbrains.java.decompiler.util.TextToken;
 import org.jetbrains.java.decompiler.util.TextUtil;
 import org.jetbrains.java.decompiler.util.collections.VBStyleCollection;
 
@@ -628,7 +629,7 @@ public class ClassWriter implements StatementWriter {
     else {
       buffer.append("class ");
     }
-    buffer.token(node.simpleName, node.classStruct.qualifiedName, true);
+    buffer.token(node.simpleName, node.classStruct.qualifiedName, true, TextToken.Type.CLASS);
 
     GenericClassDescriptor descriptor = cl.getSignature();
     if (descriptor != null && !descriptor.fparameters.isEmpty()) {
@@ -752,7 +753,7 @@ public class ClassWriter implements StatementWriter {
       buffer.append(' ');
     }
 
-    buffer.token(name, name + ":" + fd.getDescriptor(), true);
+    buffer.token(name, name + ":" + fd.getDescriptor(), true, TextToken.Type.FIELD);
 
     Exprent initializer;
     if (fd.hasModifier(CodeConstants.ACC_STATIC)) {
@@ -1029,7 +1030,7 @@ public class ClassWriter implements StatementWriter {
           buffer.append(' ');
         }
 
-        buffer.token(toValidJavaIdentifier(name), mt.getName() + mt.getDescriptor(), true);
+        buffer.token(toValidJavaIdentifier(name), mt.getName() + mt.getDescriptor(), true, TextToken.Type.METHOD);
         buffer.append('(');
 
         List<VarVersionPair> mask = methodWrapper.synthParameters;

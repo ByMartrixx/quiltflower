@@ -21,6 +21,7 @@ import org.jetbrains.java.decompiler.struct.match.MatchNode;
 import org.jetbrains.java.decompiler.struct.match.MatchNode.RuleValue;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.TextBuffer;
+import org.jetbrains.java.decompiler.util.TextToken;
 import org.jetbrains.java.decompiler.util.TextUtil;
 
 import java.util.*;
@@ -148,7 +149,7 @@ public class FieldExprent extends Exprent {
 
     if (isStatic) {
       if (useQualifiedStatic()) {
-        buf.token(DecompilerContext.getImportCollector().getShortNameInClassContext(ExprProcessor.buildJavaClassName(classname)), classname);
+        buf.token(DecompilerContext.getImportCollector().getShortNameInClassContext(ExprProcessor.buildJavaClassName(classname)), classname, TextToken.Type.CLASS);
         buf.append(".");
       }
     }
@@ -209,7 +210,7 @@ public class FieldExprent extends Exprent {
 
     buf.addBytecodeMapping(bytecode);
 
-    buf.token(name, name + ":" + descriptor);
+    buf.token(name, name + ":" + descriptor.descriptorString, TextToken.Type.FIELD);
 
     return buf;
   }

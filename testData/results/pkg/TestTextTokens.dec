@@ -151,26 +151,26 @@ Lines mapping:
 26 <-> 34
 27 <-> 35
 // Tokens:
-// 1:9 1:12 pkg
-// 5:14 5:28 (def) TestTextTokens pkg/TestTextTokens
-// 6:31 6:34 (def) bee bee:Lpkg/TestTextTokens$Bee;
-// 8:16 8:19 (def) foo foo()V
-// 9:7 9:10 bar bar(Ljava/lang/String;)V
-// 10:12 10:15 bee bee:org.jetbrains.java.decompiler.struct.gen.FieldDescriptor@38dda27f
-// 10:16 10:20 buzz buzz()V
-// 11:7 11:13 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 11:14 12:5 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 12:17 13:2 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 13:3 13:9 method method(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 13:52 13:57 apply apply(Ljava/lang/Object;)Ljava/lang/Object;
-// 16:3 16:6 (def) bar bar(Ljava/lang/String;)V
-// 17:14 17:20 System java/lang/System
-// 17:21 17:24 out out:org.jetbrains.java.decompiler.struct.gen.FieldDescriptor@919f0136
-// 17:25 17:32 println println(Ljava/lang/String;)V
-// 20:33 20:39 (def) method method(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 24:8 24:15 andThen andThen(Ljava/util/function/Function;)Ljava/util/function/Function;
-// 24:33 24:40 replace replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
-// 25:7 25:10 (def) Bee pkg/TestTextTokens$Bee
-// 25:28 25:31 (def) Bee <init>(Lpkg/TestTextTokens;)V
-// 28:4 28:8 (def) buzz buzz()V
-// 29:22 29:1 bar bar(Ljava/lang/String;)V
+// 1:9 1:12 PACKAGE pkg
+// 5:14 5:28 CLASS (def) TestTextTokens pkg/TestTextTokens
+// 6:31 6:34 FIELD (def) bee bee:Lpkg/TestTextTokens$Bee;
+// 8:16 8:19 METHOD (def) foo foo()V
+// 9:7 9:10 METHOD bar bar(Ljava/lang/String;)V
+// 10:12 10:15 FIELD bee bee:Lpkg/TestTextTokens$Bee;
+// 10:16 10:20 METHOD buzz buzz()V
+// 11:7 11:13 METHOD method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 11:14 12:5 METHOD method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 12:17 13:2 METHOD method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 13:3 13:9 METHOD method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 13:52 13:57 METHOD apply apply(Ljava/lang/Object;)Ljava/lang/Object;
+// 16:3 16:6 METHOD (def) bar bar(Ljava/lang/String;)V
+// 17:14 17:20 CLASS System java/lang/System
+// 17:21 17:24 FIELD out out:Ljava/io/PrintStream;
+// 17:25 17:32 METHOD println println(Ljava/lang/String;)V
+// 20:33 20:39 METHOD (def) method method(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 24:8 24:15 METHOD andThen andThen(Ljava/util/function/Function;)Ljava/util/function/Function;
+// 24:33 24:40 METHOD replace replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+// 25:7 25:10 CLASS (def) Bee pkg/TestTextTokens$Bee
+// 25:28 25:31 METHOD (def) Bee <init>(Lpkg/TestTextTokens;)V
+// 28:4 28:8 METHOD (def) buzz buzz()V
+// 29:22 29:1 METHOD bar bar(Ljava/lang/String;)V
