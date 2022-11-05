@@ -705,7 +705,7 @@ public class InvocationExprent extends Exprent {
             buf.append('>');
           }
         } else {
-          buf.token(name, name + descriptor, TextToken.Type.METHOD);
+          buf.token(name, classname + "#" + name + descriptor, TextToken.Type.METHOD);
         }
 
         buf.append("(");

@@ -210,7 +210,7 @@ public class FieldExprent extends Exprent {
 
     buf.addBytecodeMapping(bytecode);
 
-    buf.token(name, name + ":" + descriptor.descriptorString, TextToken.Type.FIELD);
+    buf.token(name, classname + "#" + name + ":" + descriptor.descriptorString, TextToken.Type.FIELD);
 
     return buf;
   }

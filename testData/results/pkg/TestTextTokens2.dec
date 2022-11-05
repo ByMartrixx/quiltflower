@@ -62,11 +62,13 @@ Lines mapping:
 // Tokens:
 // 1:9 1:12 PACKAGE pkg
 // 3:14 3:29 CLASS (def) TestTextTokens2 pkg/TestTextTokens2
-// 4:16 4:19 METHOD (def) foo foo()V
+// 4:16 4:19 METHOD (def) foo pkg/TestTextTokens2#foo()V
 // 5:7 5:13 CLASS System java/lang/System
-// 5:14 5:17 FIELD out out:Ljava/io/PrintStream;
-// 6:11 6:18 METHOD println println(Ljava/lang/String;)V
-// 7:18 7:25 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 8:21 8:28 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 9:24 9:31 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 17:18 17:25 METHOD (def) newLine newLine(Ljava/lang/String;)Ljava/lang/String;
+// 5:14 5:17 FIELD out java/lang/System#out:Ljava/io/PrintStream;
+// 6:11 6:18 METHOD println java/io/PrintStream#println(Ljava/lang/String;)V
+// 7:18 7:25 METHOD newLine pkg/TestTextTokens2#newLine(Ljava/lang/String;)Ljava/lang/String;
+// 8:21 8:28 METHOD newLine pkg/TestTextTokens2#newLine(Ljava/lang/String;)Ljava/lang/String;
+// 9:24 9:31 METHOD newLine pkg/TestTextTokens2#newLine(Ljava/lang/String;)Ljava/lang/String;
+// 17:11 17:17 CLASS String java/lang/String
+// 17:18 17:25 METHOD (def) newLine pkg/TestTextTokens2#newLine(Ljava/lang/String;)Ljava/lang/String;
+// 17:26 17:32 CLASS String java/lang/String

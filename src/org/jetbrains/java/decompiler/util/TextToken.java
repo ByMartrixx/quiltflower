@@ -39,6 +39,7 @@ public class TextToken {
     CLASS,
     FIELD,
     METHOD,
+    PARAMETER,
     LOCAL,
     PACKAGE
   }

@@ -753,7 +753,7 @@ public class ClassWriter implements StatementWriter {
       buffer.append(' ');
     }
 
-    buffer.token(name, name + ":" + fd.getDescriptor(), true, TextToken.Type.FIELD);
+    buffer.token(name, cl.qualifiedName + "#" + name + ":" + fd.getDescriptor(), true, TextToken.Type.FIELD);
 
     Exprent initializer;
     if (fd.hasModifier(CodeConstants.ACC_STATIC)) {
@@ -1026,11 +1026,16 @@ public class ClassWriter implements StatementWriter {
         }
 
         if (!init) {
-          buffer.append(ExprProcessor.getCastTypeName(descriptor == null ? md.ret : descriptor.returnType));
+          VarType retType = descriptor == null ? md.ret : descriptor.returnType;
+          if (retType.type == CodeConstants.TYPE_OBJECT) {
+            buffer.token(ExprProcessor.getCastTypeName(retType), retType.value, TextToken.Type.CLASS);
+          } else {
+            buffer.append(ExprProcessor.getCastTypeName(retType));
+          }
           buffer.append(' ');
         }
 
-        buffer.token(toValidJavaIdentifier(name), mt.getName() + mt.getDescriptor(), true, TextToken.Type.METHOD);
+        buffer.token(toValidJavaIdentifier(name), cl.qualifiedName + "#" + mt.getName() + mt.getDescriptor(), true, TextToken.Type.METHOD);
         buffer.append('(');
 
         List<VarVersionPair> mask = methodWrapper.synthParameters;
@@ -1090,7 +1095,11 @@ public class ClassWriter implements StatementWriter {
                 DecompilerContext.getOption(IFernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
               typeName = ExprProcessor.getCastTypeName(VarType.VARTYPE_OBJECT);
             }
-            buffer.append(typeName);
+            if (parameterType.type == CodeConstants.TYPE_OBJECT) {
+              buffer.token(typeName, parameterType.value, TextToken.Type.CLASS);
+            } else {
+              buffer.append(typeName);
+            }
             if (isVarArg) {
               buffer.append("...");
             }
