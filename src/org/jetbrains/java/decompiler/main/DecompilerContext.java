@@ -4,6 +4,7 @@ package org.jetbrains.java.decompiler.main;
 import org.jetbrains.java.decompiler.main.collectors.BytecodeSourceMapper;
 import org.jetbrains.java.decompiler.main.collectors.CounterContainer;
 import org.jetbrains.java.decompiler.main.collectors.ImportCollector;
+import org.jetbrains.java.decompiler.main.collectors.TextTokenCollector;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.decompiler.vars.VarProcessor;
@@ -32,6 +33,7 @@ public class DecompilerContext {
   private VarProcessor varProcessor;
   private CounterContainer counterContainer;
   private BytecodeSourceMapper bytecodeSourceMapper;
+  private TextTokenCollector textTokenCollector;
 
   public DecompilerContext(Map<String, Object> properties,
                            IFernflowerLogger logger,
@@ -76,6 +78,7 @@ public class DecompilerContext {
     context.importCollector = importCollector;
     context.counterContainer = new CounterContainer();
     context.bytecodeSourceMapper = new BytecodeSourceMapper();
+    context.textTokenCollector = new TextTokenCollector();
   }
 
   public static void startMethod(VarProcessor varProcessor) {
@@ -143,5 +146,9 @@ public class DecompilerContext {
 
   public static BytecodeSourceMapper getBytecodeSourceMapper() {
     return getCurrentContext().bytecodeSourceMapper;
+  }
+
+  public static TextTokenCollector getTextTokenCollector() {
+    return getCurrentContext().textTokenCollector;
   }
 }

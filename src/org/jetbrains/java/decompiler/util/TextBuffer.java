@@ -631,10 +631,14 @@ public class TextBuffer {
     }
   }
 
-  private Set<TextToken> dumpedTokens = new LinkedHashSet<>();
+  private final Set<TextToken> dumpedTokens = new LinkedHashSet<>();
 
   public void dumpTokens() {
-    dumpedTokens.addAll(myRootGroup.flattenTokens());
+    dumpedTokens.addAll(getTokens());
+  }
+
+  public List<TextToken> getTokens() {
+    return myRootGroup.flattenTokens();
   }
 
   private static final class BytecodeMappingKey {

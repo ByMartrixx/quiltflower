@@ -1,6 +1,8 @@
 // Copyright 2000-2022 JetBrains s.r.o. and ForgeFlower contributors Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.jetbrains.java.decompiler.main.extern;
 
+import org.jetbrains.java.decompiler.util.TextToken;
+
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -103,6 +105,19 @@ public interface IContextSource {
      * @param mapping a flat array of pairs of (input line number, output line number), null when -bsm=0
      */
     void acceptClass(final String qualifiedName, final String fileName, final String content, final int[] mapping);
+
+    /**
+     * Write a class to this entry
+     *
+     * @param qualifiedName the qualified name of the class
+     * @param fileName      the file name of the class, relative to its source
+     * @param content       the class text content
+     * @param mapping       a flat array of pairs of (input line number, output line number), null when -bsm=0
+     * @param tokens        an array of tokens representing element references or declarations, null when -ett=0
+     */
+    default void acceptClass(final String qualifiedName, final String fileName, final String content, final int[] mapping, TextToken[] tokens) {
+      acceptClass(qualifiedName, fileName, content, mapping);
+    }
 
     /**
      * Create a directory in this output location.

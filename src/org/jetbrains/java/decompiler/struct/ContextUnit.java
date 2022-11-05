@@ -6,6 +6,7 @@ import org.jetbrains.java.decompiler.main.extern.IContextSource;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.jetbrains.java.decompiler.main.extern.IResultSaver;
+import org.jetbrains.java.decompiler.util.TextToken;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -147,7 +148,11 @@ public class ContextUnit {
           if (DecompilerContext.getOption(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING)) {
             mapping = DecompilerContext.getBytecodeSourceMapper().getOriginalLinesMapping();
           }
-          toDump[finalI] = new ClassContext(cl.qualifiedName, entryName, content, mapping);
+          TextToken[] tokens = null;
+          if (DecompilerContext.getOption(IFernflowerPreferences.EXPERIMENTAL_TEXT_TOKENS)) {
+            tokens = DecompilerContext.getTextTokenCollector().getTokens();
+          }
+          toDump[finalI] = new ClassContext(cl.qualifiedName, entryName, content, mapping, tokens);
         }));
       }
     }
@@ -164,7 +169,7 @@ public class ContextUnit {
 
     for (final ClassContext cls : toDump) {
       if (cls != null) {
-        sink.acceptClass(cls.qualifiedName, cls.entryName, cls.classContent, cls.mapping);
+        sink.acceptClass(cls.qualifiedName, cls.entryName, cls.classContent, cls.mapping, cls.tokens);
       }
     }
 
@@ -206,12 +211,19 @@ public class ContextUnit {
     private final String entryName;
     private final String classContent;
     private final int /* @Nullable */[] mapping;
+    private final TextToken /* @Nullable */[] tokens;
 
+    @Deprecated
     ClassContext(final String qualifiedName, final String entryName, final String classContent, final int[] mapping) {
+      this(qualifiedName, entryName, classContent, mapping, null);
+    }
+
+    ClassContext(final String qualifiedName, final String entryName, final String classContent, final int[] mapping, final TextToken[] tokens) {
       this.qualifiedName = qualifiedName;
       this.entryName = entryName;
       this.classContent = classContent;
       this.mapping = mapping;
+      this.tokens = tokens;
     }
   }
 }

@@ -6,6 +6,7 @@ import org.jetbrains.java.decompiler.code.Instruction;
 import org.jetbrains.java.decompiler.code.InstructionSequence;
 import org.jetbrains.java.decompiler.main.collectors.BytecodeSourceMapper;
 import org.jetbrains.java.decompiler.main.collectors.ImportCollector;
+import org.jetbrains.java.decompiler.main.collectors.TextTokenCollector;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.jetbrains.java.decompiler.main.extern.IIdentifierRenamer;
@@ -521,6 +522,11 @@ public class ClassesProcessor implements CodeConstants {
               buffer.dumpTokens();
             }
           }
+        }
+
+        if (DecompilerContext.getOption(IFernflowerPreferences.EXPERIMENTAL_TEXT_TOKENS)) {
+          TextTokenCollector collector = DecompilerContext.getTextTokenCollector();
+          collector.addAll(buffer.getTokens());
         }
       }
     }
