@@ -9,7 +9,7 @@ public class TestTextTokens {
     bar("Hello world");
     bee.buzz();
 
-    method(method(s -> method(method(s1 -> s1 + "lorem ipsum dolor sit amet")) + s)).apply("Lorem ipsum dolor sit amet");
+    method(method(string -> method(s1 -> s1 + "lorem ipsum dolor sit amet") + string)).apply("Lorem ipsum dolor sit amet");
   }
 
   private static void bar(String s) {

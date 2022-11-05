@@ -65,8 +65,8 @@ Lines mapping:
 // 4:16 4:19 METHOD (def) foo foo()V
 // 5:7 5:13 CLASS System java/lang/System
 // 5:14 5:17 FIELD out out:Ljava/io/PrintStream;
-// 5:18 6:7 METHOD println println(Ljava/lang/String;)V
-// 6:13 6:20 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 7:6 7:13 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 7:19 7:26 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
-// 10:21 10:28 METHOD (def) newLine newLine(Ljava/lang/String;)Ljava/lang/String;
+// 6:11 6:18 METHOD println println(Ljava/lang/String;)V
+// 7:18 7:25 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
+// 8:21 8:28 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
+// 9:24 9:31 METHOD newLine newLine(Ljava/lang/String;)Ljava/lang/String;
+// 17:18 17:25 METHOD (def) newLine newLine(Ljava/lang/String;)Ljava/lang/String;

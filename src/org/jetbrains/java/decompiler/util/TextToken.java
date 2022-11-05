@@ -22,6 +22,10 @@ public class TextToken {
     this.end += i;
   }
 
+  public TextToken copy() {
+    return new TextToken(start, end, text, data, def, type);
+  }
+
   public TextToken copyShifted(int i) {
     return new TextToken(start + i, end + i, text, data, def, type);
   }

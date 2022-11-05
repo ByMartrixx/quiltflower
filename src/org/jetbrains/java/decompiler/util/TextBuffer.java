@@ -7,6 +7,7 @@ import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.collectors.BytecodeMappingTracer;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.rels.DecompileRecord;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -33,8 +34,6 @@ public class TextBuffer {
   private Map<Integer, Integer> myLineToOffsetMapping = null;
   private final Map<BytecodeMappingKey, Integer> myBytecodeOffsetMapping = new LinkedHashMap<>(); // bytecode offset -> offset in text
   private final DebugTrace myDebugTrace = DecompilerContext.getOption(IFernflowerPreferences.UNIT_TEST_MODE) ? new DebugTrace(this) : null;
-
-  private final List<TextToken> tokens = new ArrayList<>();
 
   public TextBuffer() {
     myStringBuilder = new StringBuilder();
@@ -81,7 +80,7 @@ public class TextBuffer {
 
   public TextBuffer token(String str, String data, boolean def, TextToken.Type type) {
     int i = myStringBuilder.length();
-    tokens.add(new TextToken(i, i + str.length(), str, data, def, type));
+    myCurrentGroup.myTokens.add(new TextToken(i, i + str.length(), str, data, def, type));
     return append(str);
   }
 
@@ -309,11 +308,18 @@ public class TextBuffer {
           anotherPass = true;
         }
       }
+
     }
 
     // update the offset value here because it might have changed when adding indents after existing newlines
     // the parent relies on the value being correct in the list
     offsetMapping.set(offsetMapping.size() - 1, offset);
+
+    for (TextToken token : group.myTokens) {
+      if (token.start < offsetMapping.size()) {
+        token.shift(offsetMapping.get(token.start));
+      }
+    }
   }
 
 
@@ -522,11 +528,6 @@ public class TextBuffer {
         myLineToOffsetMapping.put(entry.getKey(), entry.getValue() + myStringBuilder.length());
       }
     }
-    if (!buffer.tokens.isEmpty()) {
-      for (TextToken token : buffer.tokens) {
-        tokens.add(token.copyShifted(myStringBuilder.length()));
-      }
-    }
     buffer.myBytecodeOffsetMapping.forEach((key, value) -> {
       if (key.myClass == null) {
         key = new BytecodeMappingKey(key.myBytecodeOffset, className, methodKey);
@@ -536,6 +537,7 @@ public class TextBuffer {
     NewlineGroup otherRoot = buffer.myRootGroup.copy();
     otherRoot.shift(myStringBuilder.length());
     myCurrentGroup.myReplacements.addAll(otherRoot.myReplacements);
+    myCurrentGroup.myTokens.addAll(otherRoot.myTokens);
     myCurrentGroup.myChildren.addAll(otherRoot.myChildren);
     myStringBuilder.append(buffer.myStringBuilder);
     return this;
@@ -632,7 +634,7 @@ public class TextBuffer {
   private Set<TextToken> dumpedTokens = new LinkedHashSet<>();
 
   public void dumpTokens() {
-    dumpedTokens.addAll(tokens);
+    dumpedTokens.addAll(myRootGroup.flattenTokens());
   }
 
   private static final class BytecodeMappingKey {
@@ -676,6 +678,7 @@ public class TextBuffer {
     final int myExtraIndent;
     final List<NewlineGroup> myChildren = new ArrayList<>();
     final List<Replacement> myReplacements = new ArrayList<>();
+    final List<TextToken> myTokens = new ArrayList<>();
 
     NewlineGroup(NewlineGroup parent, int start, int baseIndent, int extraIndent) {
       this.myParent = parent;
@@ -688,6 +691,9 @@ public class TextBuffer {
       myStart += amount;
       for (Replacement replacement : myReplacements) {
         replacement.myStart += amount;
+      }
+      for (TextToken token : myTokens) {
+        token.shift(amount);
       }
       for (NewlineGroup child : myChildren) {
         child.shift(amount);
@@ -707,6 +713,7 @@ public class TextBuffer {
         }
       }
       myReplacements.removeIf(r -> r.myStart > stringLength);
+      myTokens.removeIf(t -> t.start > stringLength);
     }
 
     void dump(String indent) {
@@ -723,7 +730,20 @@ public class TextBuffer {
         copy.myChildren.add(child.copy());
       }
       copy.myReplacements.addAll(myReplacements);
+      for (TextToken token : myTokens) {
+        copy.myTokens.add(token.copy());
+      }
       return copy;
+    }
+
+    private List<TextToken> flattenTokens() {
+      List<TextToken> result = new ArrayList<>(myTokens);
+      for (NewlineGroup child : myChildren) {
+        result.addAll(child.flattenTokens());
+      }
+
+      result.sort(Comparator.comparingInt(t -> t.start));
+      return result;
     }
 
     private static class Replacement {
